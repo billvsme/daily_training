@@ -86,10 +86,7 @@ def retry(delays=(0, 1, 5),
 def req():
     return requests.get("https://vmaigcc.com")
 
-
-def base_code():
-    # print(req())
-
+def singleton_code():
     print(id(A()))
     print(id(A()))
 
@@ -102,6 +99,32 @@ def base_code():
     print(a2.data)
     print(id(A4))
     print(id(A4))
+
+
+# 切片
+def slice_code():
+    a = list(range(10))
+    # 取前5个
+    print(a[:5])
+
+    # 取偶数个, step
+    print(a[::2])
+
+    # 负索引
+    # 负索引和普通索引一样，先转化成正值在看
+    print(a[5:-1])
+
+    # 负数step
+    # 负step时候，start当作无穷大，end当作无穷小，还是作开右闭合
+    print(a[5::-1])
+    print(a[:4:-2])
+
+
+
+def base_code():
+    # print(req())
+    singleton_code()
+    slice_code()
 
 
 if __name__ == '__main__':
