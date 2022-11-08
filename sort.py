@@ -26,10 +26,10 @@ def quick_sort(list_, left, right):
     while left < right:
         while left < right and value <= list_[right]:
             right -= 1
-        list_[right] = list_[left]
+        list_[left] = list_[right]
         while left < right and value >= list_[left]:
             left += 1
-        list_[left] = list_[right]
+        list_[right] = list_[left]
 
     list_[left] = value
 
