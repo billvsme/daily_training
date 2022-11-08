@@ -90,6 +90,16 @@ def build_tree(pre_data, in_data):
     node.right = build_tree(pre_data[cut+1:], in_data[cut+1:])
     return node
 
+# 反转二叉树
+def invert_tree(node):
+    if node:
+        node.left, node.right = node.right, node.left
+        if node.left:
+            node.left = invert_tree(node.left)
+        if node.right:
+            node.right = invert_tree(node.right)
+    return node
+
 
 def tree_code():
     tree = init_tree([1, 2, 3, 4, 5, 6, 7, 8])
@@ -98,6 +108,7 @@ def tree_code():
     print(in_data := in_order(tree))
     print(post_order(tree))
     print(level_order(build_tree(pre_data, in_data)))
+    print(level_order(invert_tree(tree)))
 
 
 if __name__ == '__main__':
