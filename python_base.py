@@ -1,5 +1,6 @@
 # coding: utf-8
 import time
+import logging
 import requests
 import functools
 import itertools
@@ -82,9 +83,33 @@ def retry(delays=(0, 1, 5),
         return wrapper
     return decorator
 
+
 @retry()
 def req():
     return requests.get("https://vmaigcc.com")
+
+
+# 实现一个即可以带参数也可以不带参数带装饰器
+def logged(func=None, *, level=logging.DEBUG, name=None, message=None):
+    if func is None:
+        return functools.partial(logged, level=level, name=name, message=message)
+
+    logname = name if name else func.__module__
+    log = logging.getLogger(logname)
+    logmsg = message if message else func.__name__
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        log.log(level, logmsg)
+        return func(*args, **kwargs)
+
+    return wrapper
+
+@logged(level=logging.ERROR, name="example")
+@logged
+def add(x, y):
+    return x + y
+
 
 def singleton_code():
     print(id(A()))
@@ -123,6 +148,7 @@ def slice_code():
 
 def base_code():
     # print(req())
+    print(add(1, 2))
     singleton_code()
     slice_code()
 
