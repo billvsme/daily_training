@@ -16,5 +16,9 @@
 - 切片
 
 ## 3. 常用库使用
+- flask
+- django
+- sqlalchemy
 
 ## 4. 面经
+- leetcode经典问题
