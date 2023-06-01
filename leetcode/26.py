@@ -1,0 +1,18 @@
+# coding: utf-8
+from typing import List
+
+
+class Solution:
+    def removeDuplicates(self, nums: List[int]) -> int:
+        i, j = 1, 1
+        while j < len(nums):
+            if nums[j] != nums[j-1]:
+                nums[i] = nums[j]
+                i += 1
+            j += 1
+
+        return i
+
+
+nums = [0,0,1,1,1,2,2,3,3,4]
+print(nums[:Solution().removeDuplicates(nums)])
