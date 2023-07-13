@@ -24,6 +24,7 @@ def init_tree(values):
         queue.extend([node.left, node.right])
     return tree
 
+
 # 二叉树非递归，层序列、前序、中序、后序遍历
 def level_order(tree):
     rest, queue, node = [], deque(), tree
@@ -36,6 +37,24 @@ def level_order(tree):
         if node.right:
             queue.append(node.right)
     return rest
+
+
+def level_order2(tree):
+    rest, queue, node = [], deque(), tree
+    queue.append(node)
+    while queue:
+        n = len(queue)
+        for _ in range(n):
+            node = queue.popleft()
+            if node.left:
+                queue.append(node.left)
+            if node.right:
+                queue.append(node.right)
+
+            rest.append(node.value)
+
+    return rest
+
 
 def pre_order(tree):
     rest, stack, node = [], [], tree
@@ -104,6 +123,7 @@ def invert_tree(node):
 def tree_code():
     tree = init_tree([1, 2, 3, 4, 5, 6, 7, 8])
     print(level_order(tree))
+    print(level_order2(tree))
     print(pre_data := pre_order(tree))
     print(in_data := in_order(tree))
     print(post_order(tree))
