@@ -5,6 +5,7 @@ import requests
 import functools
 import itertools
 
+
 # 用三种方法实现单例
 # 使用__new__
 class Singleton:
@@ -13,8 +14,10 @@ class Singleton:
             cls._instance = super().__new__(cls, *args, **kwargs)
         return cls._instance
 
+
 class A(Singleton):
     pass
+
 
 # 使用__call__
 class Singleton2(type):
@@ -23,8 +26,10 @@ class Singleton2(type):
             cls._instance = super().__call__(*args, **kwargs)
         return cls._instance
 
+
 class A2(metaclass=Singleton2):
     pass
+
 
 # 使用共享属性
 class Singleton3:
@@ -35,9 +40,11 @@ class Singleton3:
         ob.__dict__ = cls._state
         return ob
 
+
 class A3(Singleton3):
     def __init__(self):
         self.data = 1
+
 
 # 类装饰器
 def singleton(cls):
@@ -55,11 +62,72 @@ def singleton(cls):
 class A4():
     pass
 
+
 # import方法
 class Config:
     pass
 
+
 config = Config()
+
+
+# 不带参数装饰器
+def runtime(func):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        rest = func(*args, **kwargs)
+        end_time = time.time()
+        print(func.__name__, end_time-start_time)
+        return rest
+
+    return wrapper
+
+
+# 带参数装饰器
+def runtime2(text):
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            rest = func(*args, **kwargs)
+            end_time = time.time()
+            print(text, end_time-start_time)
+            return rest
+
+
+# 不带和带参数都可以的装饰器
+def runtime3(func=None, *, text="runtime"):
+    if not func:
+        return functools.partial(runtime3, text=text)
+
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        start_time = time.time()
+        rest = func(*args, **kwargs)
+        end_time = time.time()
+        print(text, end_time-start_time)
+        return rest
+
+    return wrapper
+
+
+# 类装饰器
+class runtime4:
+    def __init__(self, text):
+        self.text = text
+
+    def __call__(self, func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            start_time = time.time()
+            rest = func(*args, **kwargs)
+            end_time = time.time()
+            print(self.text, end_time-start_time)
+            return rest
+
+        return wrapper
+
 
 # 实现一个retry构造器
 def retry(delays=(0, 1, 5),
@@ -105,6 +173,7 @@ def logged(func=None, *, level=logging.DEBUG, name=None, message=None):
 
     return wrapper
 
+
 @logged(level=logging.ERROR, name="example")
 @logged
 def add(x, y):
@@ -143,7 +212,6 @@ def slice_code():
     # 负step时候，start当作无穷大，end当作无穷小，还是作开右闭合
     print(a[5::-1])
     print(a[:4:-2])
-
 
 
 def base_code():
